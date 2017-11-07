@@ -16,9 +16,9 @@ class ExampleProfile extends \Ho\Import\Model\ImportProfile
     /**
      * Steam XML over the web without memory usage, see class for more details
      *
-     * @var \Ho\Import\Streamer\XmlFactory
+     * @var \Ho\Import\Streamer\HttpXML
      */
-    private $xmlStreamerFactory;
+    private $httpXml;
 
     /**
      * Iterate over the source an create items.
@@ -40,7 +40,7 @@ class ExampleProfile extends \Ho\Import\Model\ImportProfile
      * @param \Magento\Framework\App\ObjectManagerFactory     $objectManagerFactory
      * @param \Symfony\Component\Stopwatch\Stopwatch          $stopwatch
      * @param \Symfony\Component\Console\Output\ConsoleOutput $consoleOutput
-     * @param \Ho\Import\Streamer\XmlFactory                  $xmlStreamerFactory
+     * @param \Ho\Import\Streamer\HttpXML                     $httpXml
      * @param \Ho\Import\RowModifier\SourceIteratorFactory    $sourceIteratorFactory
      * @param \Ho\Import\RowModifier\ItemMapperFactory        $itemMapperFactory
      */
@@ -48,12 +48,12 @@ class ExampleProfile extends \Ho\Import\Model\ImportProfile
         \Magento\Framework\App\ObjectManagerFactory $objectManagerFactory,
         \Symfony\Component\Stopwatch\Stopwatch $stopwatch,
         \Symfony\Component\Console\Output\ConsoleOutput $consoleOutput,
-        \Ho\Import\Streamer\XmlFactory $xmlStreamerFactory,
+        \Ho\Import\Streamer\HttpXML $httpXml,
         \Ho\Import\RowModifier\SourceIteratorFactory $sourceIteratorFactory,
         \Ho\Import\RowModifier\ItemMapperFactory $itemMapperFactory
     ) {
         parent::__construct($objectManagerFactory, $stopwatch, $consoleOutput);
-        $this->xmlStreamerFactory    = $xmlStreamerFactory;
+        $this->httpXml    = $httpXml;
         $this->sourceIteratorFactory = $sourceIteratorFactory;
         $this->itemMapperFactory     = $itemMapperFactory;
     }
@@ -83,7 +83,7 @@ class ExampleProfile extends \Ho\Import\Model\ImportProfile
         //Array that will hold all data to be imported.
         $items = [];
         //Move all items into an array to process.
-        $iterator       = $this->xmlStreamerFactory->create([
+        $iterator       = $this->httpXml->create([
             'url' => 'http://www.pfconcept.com/portal/datafeed/productfeed_nl_v2.xml',
             'uniqueNode' => 'productfeedRow'
         ])->getIterator();
